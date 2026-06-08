@@ -1,0 +1,14 @@
+[general]
+working_directory = "C:/Users/ginoD/"
+[terminal]
+shell = "C:/Program Files/Git/bin/bash.exe"
+[window]
+opacity= 0.85
+dimensions = { columns = 90, lines = 33 }
+padding = {x = 5, y = 5}
+position = {x = 540, y = 190}
+[font]
+normal = { family = "0xProto Nerd Font", style = "Regular"}
+[colors]
+[colors.primary]
+background = "#1a1b26"

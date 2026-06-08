@@ -1,0 +1,9 @@
+set number        " line nums
+set tabstop=4     " tab size
+set shiftwidth=4  " indent size
+set expandtab     " spaces > tabs
+syntax on         " syntax
+
+set noerrorbells  " no sound
+set visualbell    " visual bell
+set t_vb=         " no flash

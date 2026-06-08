@@ -1,0 +1,23 @@
+{
+    // --- UI and Explorer ---
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontSize": 15,
+    "editor.minimap.enabled": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+
+    // --- Files and Editing Behavior ---
+    "files.autoSave": "afterDelay",
+    "extensions.ignoreRecommendations": true,
+    "telemetry.telemetryLevel": "off",
+    "chat.disableAIFeatures": true,
+
+    // --- Git ---
+    "git.autofetch": true,
+    
+    // --- C++ and Formatting ---
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0}",
+
+    // --- Extensions (Code Runner) ---
+    "code-runner.runInTerminal": true
+}
