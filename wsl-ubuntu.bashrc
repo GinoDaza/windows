@@ -40,7 +40,7 @@ shopt -s checkwinsize
 export PATH="$HOME/.local/bin:$PATH"
 
 # =====================================================================
-# CUSTOM PROMPT & DISPAYS
+# CUSTOM PROMPT & DISPLAYS
 # =====================================================================
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -56,7 +56,13 @@ fi
 
 unset color_prompt force_color_prompt
 
-PS1='\[\e]0;\u: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+# Helper function to retrieve the active Git branch
+parse_git_branch() {
+    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+# Prompt definition: user (green), directory (blue), git branch (yellow)
+PS1='\[\e]0;\u: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
 
 # =====================================================================
 # SYSTEM ALIASES
@@ -73,15 +79,25 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+alias rm='trash'
 
 # =====================================================================
 # USER CUSTOM ALIASES & FUNCTIONS
 # =====================================================================
 alias vim='nvim'
-alias work='cd /mnt/c/Users/ginoD/Desktop/workpool-back'
 alias cdd='cd /mnt/c/Users/ginoD/Desktop'
 
 cds() {
   cd "$1" && ls
 }
+. "$HOME/.cargo/env"
+
+# Added by Antigravity CLI installer
+export PATH="/home/gdaza/.local/bin:$PATH"
+
+# =====================================================================
+# DEFAULT STARTING DIRECTORY
+# =====================================================================
+cd ~/projects/ 2>/dev/null || cd ~
