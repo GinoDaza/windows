@@ -81,13 +81,13 @@ alias l='ls -CF'
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-alias rm='trash'
-
 # =====================================================================
 # USER CUSTOM ALIASES & FUNCTIONS
 # =====================================================================
 alias vim='nvim'
 alias cdd='cd /mnt/c/Users/ginoD/Desktop'
+alias rm='trash'
+alias bat='batcat'
 
 cds() {
   cd "$1" && ls
