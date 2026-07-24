@@ -8,9 +8,17 @@ if vim.loader then
   vim.loader.enable()
 end
 
+-- Silence missing treesitter parser errors gracefully
+local ts_start = vim.treesitter.start
+vim.treesitter.start = function(buf, lang)
+  pcall(ts_start, buf, lang)
+end
+
 -- ----------------------------------------------------------------------------
 -- 1. Essential Options
 -- ----------------------------------------------------------------------------
+vim.g.mapleader = ' '         -- Space as Leader key
+
 vim.opt.number = true         -- Show line numbers
 vim.opt.cursorline = true     -- Highlight current line
 vim.opt.wrap = false          -- Don't wrap long lines by default
@@ -36,12 +44,111 @@ vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- ----------------------------------------------------------------------------
--- 2. Helix Mappings & Useful Shortcuts
+-- 2. Plugin Manager (lazy.nvim)
+-- ----------------------------------------------------------------------------
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require('lazy').setup({
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    opts = {},
+    keys = {
+      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash Jump' },
+      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
+    },
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    event = { 'BufReadPost', 'BufNewFile' },
+    config = function()
+      local ok, ts = pcall(require, 'nvim-treesitter.configs')
+      if ok then
+        ts.setup({
+          auto_install = true,
+          highlight = { enable = true },
+        })
+      end
+    end,
+  },
+  {
+    'echasnovski/mini.icons',
+    opts = {},
+    config = function(_, opts)
+      local ok, icons = pcall(require, 'mini.icons')
+      if ok then
+        icons.setup(opts)
+        icons.mock_nvim_web_devicons()
+      end
+    end,
+  },
+  {
+    'echasnovski/mini.files',
+    opts = {},
+    keys = {
+      {
+        '<leader>e',
+        function()
+          local ok, mini = pcall(require, 'mini.files')
+          if ok then
+            mini.open(vim.api.nvim_buf_get_name(0), true)
+          end
+        end,
+        desc = 'Open Mini Files',
+      },
+    },
+  },
+  {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    config = true,
+    opts = {
+      italic = {
+        strings = false,
+        emphasis = false,
+        comments = false,
+        operators = false,
+        folds = false,
+      },
+    },
+    init = function()
+      vim.cmd.colorscheme('gruvbox')
+    end,
+  },
+})
+
+-- ----------------------------------------------------------------------------
+-- 3. Mappings & Shortcuts
 -- ----------------------------------------------------------------------------
 local map = vim.keymap.set
 
 -- Press Esc to clear search highlight
 map('n', '<esc>', '<cmd>nohlsearch<cr>')
+
+-- Save file (Ctrl + S)
+map({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save file' })
+
+-- Move lines up / down (Alt + j / Alt + k)
+map('n', '<A-j>', '<cmd>m .+1<cr>==', { desc = 'Move line down' })
+map('n', '<A-k>', '<cmd>m .-2<cr>==', { desc = 'Move line up' })
+map('v', '<A-j>', ":m '>+1<cr>gv=gv", { desc = 'Move selection down' })
+map('v', '<A-k>', ":m '<-2<cr>gv=gv", { desc = 'Move selection up' })
+
+-- Fast movement (5 lines down/up with Ctrl + j/k)
+map({ 'n', 'v' }, '<C-j>', '5j', { desc = 'Move 5 lines down' })
+map({ 'n', 'v' }, '<C-k>', '5k', { desc = 'Move 5 lines up' })
 
 -- Helix-style bindings
 map({ 'n', 'v', 'x' }, 'U', '<c-r>', { desc = 'Redo' })
@@ -51,7 +158,7 @@ map({ 'n', 'v', 'x' }, 'gH', 'g^', { desc = 'Go to wrapped line start' })
 map({ 'n', 'v', 'x' }, 'gL', 'g$', { desc = 'Go to wrapped line end' })
 
 -- ----------------------------------------------------------------------------
--- 3. Useful Autocommands (Built-in)
+-- 4. Useful Autocommands (Built-in)
 -- ----------------------------------------------------------------------------
 
 -- Briefly highlight text when copying (yank)
