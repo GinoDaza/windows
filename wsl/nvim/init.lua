@@ -19,6 +19,10 @@ end
 -- ----------------------------------------------------------------------------
 vim.g.mapleader = ' '         -- Space as Leader key
 
+-- Disable netrw (replaced by mini.files for directories)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.opt.number = true         -- Show line numbers
 vim.opt.cursorline = true     -- Highlight current line
 vim.opt.wrap = false          -- Don't wrap long lines by default
@@ -96,7 +100,12 @@ require('lazy').setup({
   },
   {
     'echasnovski/mini.files',
-    opts = {},
+    lazy = false,
+    opts = {
+      options = {
+        use_as_default_explorer = true,
+      },
+    },
     keys = {
       {
         '<leader>e',
