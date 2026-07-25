@@ -11,6 +11,8 @@ sudo apt install tree
 # bat
 sudo apt install bat
 
+# c/c++ build toolchain
+sudo apt install build-essential
+
 # rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
