@@ -14,5 +14,8 @@ sudo apt install bat
 # c/c++ build toolchain
 sudo apt install build-essential
 
+# java
+sudo apt install openjdk-25-jdk
+
 # rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
