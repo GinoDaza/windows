@@ -42,20 +42,6 @@ export PATH="$HOME/.local/bin:$PATH"
 # =====================================================================
 # CUSTOM PROMPT & DISPLAYS
 # =====================================================================
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-        color_prompt=yes
-    else
-        color_prompt=
-    fi
-fi
-
-unset color_prompt force_color_prompt
-
 # Helper function to retrieve the active Git branch
 parse_git_branch() {
     git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
@@ -79,8 +65,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 # =====================================================================
 # USER CUSTOM ALIASES & FUNCTIONS
 # =====================================================================
@@ -94,10 +78,9 @@ cds() {
 }
 . "$HOME/.cargo/env"
 
-# Added by Antigravity CLI installer
-export PATH="/home/gdaza/.local/bin:$PATH"
-
 # =====================================================================
 # DEFAULT STARTING DIRECTORY
 # =====================================================================
-cd ~/projects/ 2>/dev/null || cd ~
+if [ "$PWD" = "$HOME" ]; then
+    cd ~/projects/ 2>/dev/null
+fi
