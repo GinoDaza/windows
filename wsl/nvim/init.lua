@@ -74,20 +74,6 @@ require('lazy').setup({
     },
   },
   {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile' },
-    config = function()
-      local ok, ts = pcall(require, 'nvim-treesitter.configs')
-      if ok then
-        ts.setup({
-          auto_install = true,
-          highlight = { enable = true },
-        })
-      end
-    end,
-  },
-  {
     'echasnovski/mini.icons',
     opts = {},
     config = function(_, opts)
