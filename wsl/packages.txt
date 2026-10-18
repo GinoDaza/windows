@@ -1,21 +1,42 @@
-# update and upgrade
+# update and upgrade (refresh package list and install updates)
 sudo apt update
 sudo apt upgrade
 
-# trash-cli
+# trash-cli (send files to the trash instead of deleting them)
 sudo apt install trash-cli
 
-# tree
+# tree (show directories as a tree)
 sudo apt install tree
 
-# bat
+# bat (cat with syntax highlighting)
 sudo apt install bat
 
-# c/c++ build toolchain
+# htop (process monitor)
+sudo apt install htop
+
+# unzip (extract .zip files)
+sudo apt install unzip
+
+# ffmpeg (video and audio tools)
+sudo apt install ffmpeg
+
+# poppler-utils (PDF tools like pdftotext)
+sudo apt install poppler-utils
+
+# neovim (terminal text editor)
+sudo apt install neovim
+
+# node and npm (JavaScript runtime and its package manager)
+sudo apt install nodejs npm
+
+# c/c++ build toolchain (gcc, g++ and make)
 sudo apt install build-essential
 
-# java
+# java (JDK 25: compiler and runtime)
 sudo apt install openjdk-25-jdk
 
-# rust
+# docker (containers and compose)
+sudo apt install docker.io docker-compose-v2
+
+# rust (rustup: Rust compiler and cargo installer)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

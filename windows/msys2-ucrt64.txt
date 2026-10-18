@@ -1,2 +1,2 @@
-
+# c/c++ build toolchain (gcc, make, cmake)
 pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake
