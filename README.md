@@ -18,6 +18,7 @@ Personal setup for my Windows machine and its WSL Ubuntu: config files, shell se
 │   ├── packages.txt          # apt and rustup installs
 │   └── nvim/init.lua         # Neovim config
 ├── games/
+│   ├── left4dead2/           # Left 4 Dead 2 autoexec and Steam launch options
 │   └── warcraft3/            # Warcraft 3 custom hotkeys
 └── notes/
     └── yt-dlp-ffmpeg.md      # download and trim YouTube videos
