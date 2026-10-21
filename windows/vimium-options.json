@@ -8,6 +8,6 @@
   "keyMappings": "map t Vomnibar.activateInNewTab",
   "newTabCustomUrl": "https://ginodaza.github.io/newtab/",
   "newTabDestination": "customUrl",
-  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\ny: https://www.youtube.com/results?search_query=%s Youtube\ngm: https://www.google.com/maps?q=%s Maps\ngte: https://translate.google.com/?sl=en&tl=es&text=%s Translate EN to ES\ngts: https://translate.google.com/?sl=es&tl=en&text=%s Translate ES to EN",
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\ny: https://www.youtube.com/results?search_query=%s Youtube\ngm: https://www.google.com/maps?q=%s Maps\ngi: https://www.google.com/search?tbm=isch&q=%s Images\ngte: https://translate.google.com/?sl=en&tl=es&text=%s Translate EN to ES\ngts: https://translate.google.com/?sl=es&tl=en&text=%s Translate ES to EN",
   "settingsVersion": "2.4.2"
 }
