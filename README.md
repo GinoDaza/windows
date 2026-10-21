@@ -12,8 +12,9 @@ Personal setup for my Windows machine and its WSL Ubuntu: config files, shell se
 │   ├── msys2-ucrt64.txt      # MSYS2 UCRT64 toolchain install
 │   ├── git-bash.bashrc       # Git Bash prompt and aliases
 │   ├── vimrc                 # Vim settings
-│   ├── fonts/                # Ubuntu Mono, Nerd Font symbols (original and 90% size) and the script that makes it
+│   ├── fonts/                # Ubuntu Mono, Nerd Font symbols (original and small) and the script that makes it
 │   ├── newtab/ext/           # Edge extension that redirects new tabs to my page
+│   ├── vimium-options.json   # Vimium export: search engines, key mappings, new tab URL
 │   └── vscode/               # VS Code settings and keybindings
 ├── wsl/                      # WSL Ubuntu setup
 │   ├── bashrc                # shell prompt, aliases, PATH
