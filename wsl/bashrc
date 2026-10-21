@@ -69,12 +69,34 @@ alias l='ls -CF'
 # USER CUSTOM ALIASES & FUNCTIONS
 # =====================================================================
 alias vim='nvim'
-alias cdd='cd /mnt/c/Users/ginoD/Desktop'
+alias cdd='cd /home/gdaza/Desktop'
+alias cdw='cd /mnt/c/Users/ginoD'
+alias cdwd='cd /mnt/c/Users/ginoD/Desktop'
 alias rm='trash'
 alias bat='batcat'
 
-cds() {
-  cd "$1" && ls
+cdl() {
+  cd "${1:-.}" && ls
+}
+
+saveclip() {
+  local target="${1:-/tmp/clip.png}"
+  local win_target
+  win_target=$(wslpath -w "$target")
+  powershell.exe -NoProfile -Command "
+    Add-Type -AssemblyName System.Windows.Forms;
+    if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
+      \$img = [System.Windows.Forms.Clipboard]::GetImage();
+      \$img.Save('$win_target', [System.Drawing.Imaging.ImageFormat]::Png);
+      Write-Host 'Image saved';
+    } else {
+      Write-Error 'No image in clipboard';
+      exit 1;
+    }
+  " > /dev/null
+  if [ $? -eq 0 ]; then
+    echo "$target"
+  fi
 }
 . "$HOME/.cargo/env"
 
@@ -82,5 +104,15 @@ cds() {
 # DEFAULT STARTING DIRECTORY
 # =====================================================================
 if [ "$PWD" = "$HOME" ]; then
-    cd ~/projects/ 2>/dev/null
+    cd ~/Desktop/ 2>/dev/null
 fi
+
+open() {
+    if [ -z "$1" ]; then
+        explorer.exe .
+    elif [[ "$1" =~ ^https?:// ]]; then
+        explorer.exe "$1"
+    else
+        explorer.exe "$(wslpath -w "$1")"
+    fi
+}
