@@ -26,6 +26,9 @@ sudo apt install poppler-utils
 # neovim (terminal text editor)
 sudo apt install neovim
 
+# chafa (show images in the terminal)
+sudo apt install chafa
+
 # node and npm (JavaScript runtime and its package manager)
 sudo apt install nodejs npm
 

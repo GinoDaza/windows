@@ -90,18 +90,7 @@ require('lazy').setup({
     opts = {
       options = {
         use_as_default_explorer = true,
-      },
-    },
-    keys = {
-      {
-        '<leader>e',
-        function()
-          local ok, mini = pcall(require, 'mini.files')
-          if ok then
-            mini.open(vim.api.nvim_buf_get_name(0), true)
-          end
-        end,
-        desc = 'Open Mini Files',
+        permanent_delete = false,  -- Move deleted files to ~/.local/share/nvim/mini.files/trash
       },
     },
   },
@@ -152,6 +141,73 @@ map({ 'n', 'v', 'x' }, 'gl', '$', { desc = 'Go to end of line' })
 map({ 'n', 'v', 'x' }, 'gH', 'g^', { desc = 'Go to wrapped line start' })
 map({ 'n', 'v', 'x' }, 'gL', 'g$', { desc = 'Go to wrapped line end' })
 
+-- Space e (mini.files) and Space t (floating terminal) toggle each other
+local term = { buf = nil, win = nil }
+
+local function term_is_open()
+  return term.win and vim.api.nvim_win_is_valid(term.win)
+end
+
+local function close_term()
+  if term_is_open() then
+    vim.api.nvim_win_close(term.win, true)
+  end
+end
+
+local function close_files()
+  local ok, mini = pcall(require, 'mini.files')
+  if ok then
+    mini.close()
+  end
+end
+
+map('n', '<leader>e', function()
+  -- Terminal buffers have a term:// name, so use the image path instead
+  local path = vim.b.image_file or vim.api.nvim_buf_get_name(0)
+  if vim.bo.buftype == 'terminal' and not vim.b.image_file then
+    path = nil
+  end
+  close_term()
+  local ok, mini = pcall(require, 'mini.files')
+  if ok then
+    mini.open(path, true)
+  end
+end, { desc = 'Open Mini Files' })
+
+-- Space e also closes mini.files from inside the explorer
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'MiniFilesBufferCreate',
+  callback = function(args)
+    map('n', '<leader>e', close_files, { buffer = args.data.buf_id, desc = 'Close Mini Files' })
+  end,
+})
+
+map('n', '<leader>t', function()
+  if term_is_open() then
+    close_term()
+    return
+  end
+  close_files()
+  local w, h = math.floor(vim.o.columns * 0.8), math.floor(vim.o.lines * 0.8)
+  if not (term.buf and vim.api.nvim_buf_is_valid(term.buf)) then
+    term.buf = vim.api.nvim_create_buf(false, true)
+    map('n', 'q', close_term, { buffer = term.buf, desc = 'Close floating terminal' })
+  end
+  term.win = vim.api.nvim_open_win(term.buf, true, {
+    relative = 'editor', width = w, height = h,
+    col = math.floor((vim.o.columns - w) / 2),
+    row = math.floor((vim.o.lines - h) / 2),
+    style = 'minimal', border = 'rounded',
+  })
+  if vim.bo[term.buf].buftype ~= 'terminal' then
+    vim.fn.termopen(vim.o.shell)
+  end
+  vim.cmd.startinsert()
+end, { desc = 'Toggle floating terminal' })
+
+-- Esc Esc leaves terminal mode
+map('t', '<esc><esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
+
 -- ----------------------------------------------------------------------------
 -- 4. Useful Autocommands (Built-in)
 -- ----------------------------------------------------------------------------
@@ -168,4 +224,49 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
   command = [[:%s/\s\+$//e]],
+})
+
+-- Show images small in a terminal buffer using chafa
+vim.api.nvim_create_autocmd('BufReadCmd', {
+  desc = 'Preview images with chafa',
+  pattern = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.bmp' },
+  callback = function(ev)
+    local file = vim.fn.fnamemodify(ev.file, ':p')
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+    vim.wo.signcolumn = 'no'
+    vim.wo.cursorline = false
+    local w, h = vim.api.nvim_win_get_width(0), vim.api.nvim_win_get_height(0)
+    vim.b.image_file = file
+    vim.api.nvim_create_autocmd('TermClose', {
+      buffer = ev.buf,
+      once = true,
+      callback = function()
+        -- Remove the "[Process exited 0]" line
+        vim.defer_fn(function()
+          if not vim.api.nvim_buf_is_valid(ev.buf) then
+            return
+          end
+          local lines = vim.api.nvim_buf_get_lines(ev.buf, 0, -1, false)
+          for i = #lines, 1, -1 do
+            if lines[i]:match('^%[Process exited %d+%]$') then
+              vim.bo[ev.buf].modifiable = true
+              vim.api.nvim_buf_set_lines(ev.buf, i - 1, i, false, {})
+              vim.bo[ev.buf].modifiable = false
+              break
+            end
+          end
+        end, 50)
+      end,
+    })
+    vim.fn.termopen({
+      'chafa',
+      '--view-size=' .. w .. 'x' .. h,
+      '--size=' .. math.floor(w * 0.75) .. 'x' .. math.floor(h * 0.75),
+      '--work=5',
+      '--scale=1.0',
+      '--align=mid,mid',
+      file,
+    })
+  end,
 })
