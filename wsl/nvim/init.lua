@@ -95,6 +95,17 @@ require('lazy').setup({
     },
   },
   {
+    'echasnovski/mini.diff',
+    event = { 'BufReadPre', 'BufNewFile' },
+    opts = {
+      -- Only show signs; disable all hunk mappings
+      mappings = {
+        apply = '', reset = '', textobject = '',
+        goto_first = '', goto_prev = '', goto_next = '', goto_last = '',
+      },
+    },
+  },
+  {
     'ellisonleao/gruvbox.nvim',
     priority = 1000,
     config = true,
