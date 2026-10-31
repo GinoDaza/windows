@@ -12,7 +12,7 @@ Personal setup for my Windows machine and its WSL Ubuntu: config files, shell se
 │   ├── msys2-ucrt64.txt      # MSYS2 UCRT64 toolchain install
 │   ├── git-bash.bashrc       # Git Bash prompt and aliases
 │   ├── vimrc                 # Vim settings
-│   ├── ntilde/               # tiny C hotkey app: Alt+; types ñ, Alt+Shift+; types Ñ
+│   ├── ntilde/               # tiny C hotkey app: Alt+N types ñ, Alt+Shift+N types Ñ
 │   ├── fonts/                # Ubuntu Mono, Nerd Font symbols (original and small) and the script that makes it
 │   ├── newtab/ext/           # Edge extension that redirects new tabs to my page
 │   ├── vimium-options.json   # Vimium export: search engines, key mappings, new tab URL

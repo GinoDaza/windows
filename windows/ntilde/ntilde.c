@@ -1,4 +1,4 @@
-// Alt+; -> ñ, Alt+Shift+; -> Ñ  (tiny background app, no window)
+// Alt+N -> ñ, Alt+Shift+N -> Ñ  (tiny background app, no window)
 // Build: x86_64-w64-mingw32-gcc -Os -s -mwindows -o ntilde.exe ntilde.c
 #include <windows.h>
 
@@ -22,8 +22,8 @@ static void type_char(WCHAR c) {
 }
 
 int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPSTR cmd, int show) {
-    RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, VK_OEM_1);              // Alt + ;
-    RegisterHotKey(NULL, 2, MOD_ALT | MOD_SHIFT | MOD_NOREPEAT, VK_OEM_1);  // Alt + Shift + ;
+    RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 0x4E);                  // Alt + N
+    RegisterHotKey(NULL, 2, MOD_ALT | MOD_SHIFT | MOD_NOREPEAT, 0x4E);      // Alt + Shift + N
     MSG m;
     while (GetMessage(&m, NULL, 0, 0)) {
         if (m.message == WM_HOTKEY)
