@@ -20,6 +20,7 @@ Personal setup for my Windows machine and its WSL Ubuntu: config files, shell se
 ├── wsl/                      # WSL Ubuntu setup
 │   ├── bashrc                # shell prompt, aliases, PATH
 │   ├── packages.txt          # apt and rustup installs
+│   ├── setup.sh              # configures WSL from this repo
 │   └── nvim/init.lua         # Neovim config
 ├── games/
 │   ├── left4dead2/           # Left 4 Dead 2 autoexec and Steam launch options

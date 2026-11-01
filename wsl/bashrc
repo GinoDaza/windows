@@ -69,9 +69,10 @@ alias l='ls -CF'
 # USER CUSTOM ALIASES & FUNCTIONS
 # =====================================================================
 alias vim='nvim'
-alias cdd='cd /home/gdaza/Desktop'
-alias cdw='cd /mnt/c/Users/ginoD'
-alias cdwd='cd /mnt/c/Users/ginoD/Desktop'
+WIN_USER="ginoD"
+alias cdd='cd ~/Desktop'
+alias cdw="cd /mnt/c/Users/$WIN_USER"
+alias cdwd="cd /mnt/c/Users/$WIN_USER/Desktop"
 alias rm='trash'
 alias bat='batcat'
 
