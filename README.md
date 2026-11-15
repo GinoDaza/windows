@@ -28,5 +28,6 @@ Personal setup for my Windows machine and its WSL Ubuntu: config files, shell se
 └── notes/
     ├── newtab-setup.md       # custom new tab: extension, Vimium and Edge settings
     ├── smaller-nerd-icons.md # Ubuntu Mono + smaller Nerd Font icons in Windows Terminal
+    ├── unity-mcp-wsl.md      # Unity MCP server and cm (Unity Version Control) installed from WSL
     └── yt-dlp-ffmpeg.md      # download and trim YouTube videos
 ```
