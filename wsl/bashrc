@@ -48,7 +48,7 @@ parse_git_branch() {
 }
 
 # Prompt definition: user (green), directory (blue), git branch (yellow)
-PS1='\[\e]0;\u: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
+PS1='\[\e]0;${PWD#"${PWD%/*/*}/"}\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
 
 # =====================================================================
 # SYSTEM ALIASES
@@ -69,7 +69,7 @@ alias l='ls -CF'
 # USER CUSTOM ALIASES & FUNCTIONS
 # =====================================================================
 alias vim='nvim'
-WIN_USER="ginoD"
+WIN_USER="__WIN_USER__"  # replaced by wsl/setup.sh
 alias cdd='cd ~/Desktop'
 alias cdw="cd /mnt/c/Users/$WIN_USER"
 alias cdwd="cd /mnt/c/Users/$WIN_USER/Desktop"

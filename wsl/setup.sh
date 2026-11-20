@@ -31,4 +31,11 @@ mkdir -p "$HOME/.config/nvim"
 cp "$REPO/wsl/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 cp "$REPO/wsl/bashrc" "$HOME/.bashrc"
 
+echo "==> Windows username (hardcoded into ~/.bashrc)"
+WIN_USER="$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null | tr -d '\r\n' || true)"
+if [ -z "$WIN_USER" ] || [ ! -d "/mnt/c/Users/$WIN_USER" ]; then
+  read -rp "Could not detect Windows user. Enter it: " WIN_USER
+fi
+sed -i "s|__WIN_USER__|$WIN_USER|" "$HOME/.bashrc"
+
 echo "==> Done. Open a new terminal or run: source ~/.bashrc"
