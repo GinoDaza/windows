@@ -106,6 +106,14 @@ require('lazy').setup({
     },
   },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = 'markdown',
+    keys = {
+      { '<leader>m', '<cmd>RenderMarkdown toggle<cr>', desc = 'Toggle markdown render' },
+    },
+    opts = {},
+  },
+  {
     'ellisonleao/gruvbox.nvim',
     priority = 1000,
     config = true,
@@ -122,6 +130,9 @@ require('lazy').setup({
       vim.cmd.colorscheme('gruvbox')
     end,
   },
+}, {
+  -- lazy.nvim resets rtp; keep system treesitter parsers (markdown, etc.)
+  performance = { rtp = { paths = { '/usr/lib/nvim' } } },
 })
 
 -- ----------------------------------------------------------------------------
@@ -228,6 +239,29 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight yanked text',
   callback = function()
     vim.hl.on_yank({ timeout = 250 })
+  end,
+})
+
+-- Wrap long lines only for prose (markdown / text); code stays unwrapped
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Soft-wrap prose files',
+  pattern = { 'markdown', 'text' },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true    -- break at word boundaries
+    vim.opt_local.breakindent = true  -- keep indentation on wrapped lines
+    vim.opt_local.list = false        -- no trailing-space dots in prose
+  end,
+})
+
+-- render-markdown.nvim needs the treesitter highlighter active to align tables
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Start treesitter for markdown',
+  pattern = 'markdown',
+  callback = function(ev)
+    pcall(vim.treesitter.start, ev.buf, 'markdown')
+    -- fixed sign column so the plugin's table width calculation matches the real text area
+    vim.opt_local.signcolumn = 'yes'
   end,
 })
 
